@@ -10,20 +10,26 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('', views.getRoutes),
     path('notes/', views.getNotes),
+
+    path('requests/', views.getRequests),
+
     path('users/', views.getUsers),
-    path('userProfile/', views.getUserInfo),
+    path('users/add', views.adduser),
+    path('users/delete/<int:pk>', views.deleteuser),
+    path('users/update/<int:pk>', views.updateUser),
+    path('users/<int:pk>', views.getUser),
+
     path('formdata/', views.fromData),
-    path('addRequest/', views.addRequest),
     
     path('categories/', views.getCategories),
     path('categories/<int:pk>/', views.categoryDetail),
-    path('categories/add/', views.addCategory),
+    path('categories/add', views.addCategory),
     path('categories/update/<int:pk>', views.updateCategory),   
     path('categories/delete/<int:pk>', views.deleteCategory),
 
     path('articles/', views.getArticles),
-    path('articles/<int:pk>/', views.articleDetail),
-    path('articles/add/', views.addArticle),
+    path('articles/<int:pk>', views.articleDetail),
+    path('articles/add', views.addArticle),
     path('articles/update/<int:pk>', views.updateArticle),   
     path('articles/delete/<int:pk>', views.deleteArticle),
 

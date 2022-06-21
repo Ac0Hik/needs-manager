@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User 
 
 
+
 # Create your models here.
 
 
@@ -15,6 +16,7 @@ class Note(models.Model):
     def __str__(self) -> str:
        return self.title
 
+       
 
 
 
@@ -27,7 +29,7 @@ class Category(models.Model):
 
 class Article(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
-    description = models.CharField(max_length=300, blank=False, null=False)
+    description = models.CharField(max_length=300, blank=False, null=False, default='no description')
     quantity = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(200)], default=0
     )
@@ -39,37 +41,41 @@ class Article(models.Model):
 
 
 
-class Teacher(models.Model):#could be the profile class, one to one relationship with User class
-    name = models.CharField(max_length=50)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+class Profile(models.Model):#could be the profile class, one to one relationship with User class
+    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='profiles', null=True)
+    is_manager = models.BooleanField(default=False)
     
-
     def __str__(self) -> str:
-        return self.name
+        return self.user.username
 
 
 class Basket(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=False)
-
+    created_at = models.DateTimeField(auto_now_add=True)   
     def __str__(self) -> str:
-      return self.created_by.user.username
+       return self.created_at.strftime("%m/%d/%Y, %H:%M:%S")
+   
     
-
-class Request(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+class Item(models.Model):
+    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='items')
     article = models.ForeignKey(Article, null=False, on_delete = models.CASCADE)
-    qte = models.IntegerField(
+    qte_requested = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(200)], default=0
     )
-    basket = models.ForeignKey(Basket, null=False, on_delete=models.CASCADE)
     observation = models.TextField(blank=True, null=True)
     class Type(models.TextChoices):
         being_processed = 'BP'
         accepted = 'A'        
         rejected  = 'R' 
-    state = models.fields.CharField(max_length=20, choices=Type.choices, null=True, default='BR')
+    state = models.fields.CharField(max_length=20, choices=Type.choices, null=True, default='BP')
+    def __str__(self) -> str:
+       return self.state
+
+class Request(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    
+    basket = models.OneToOneField(Basket, null=False, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-      return self.basket.created_by.user.username
+      return self.created_by.username
     

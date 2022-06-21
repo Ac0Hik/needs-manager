@@ -1,12 +1,11 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react'
-import AuthContext from '../context/AuthContext'
-import Header from './../components/Header'
+import React, {useContext} from 'react'
+import AuthContext from '../../context/AuthContext'
 
 const HomePage = () => {
-    let [notes, setNotes] = useState([])
-    let {authTokens, logoutUser, user } = useContext(AuthContext)
+    //let [notes, setNotes] = useState([])
+    let {user } = useContext(AuthContext)
 
-    useEffect(() => {
+   /* useEffect(() => {
         getNotes()
     },[])
 
@@ -28,19 +27,18 @@ const HomePage = () => {
             logoutUser()
         }
     
-    })
+    })*/
 
     return (
         <div >
-            <Header />
             <div className='container'>
                 <p>You are logged to the home page! hello {user.username}</p>
                 {user.is_staff ? <span>you are an admin</span> : <span>you are a regular user</span>}
-                <ul>
+                {/*<ul>
                     {notes.map(note => (
                         <li key={note.id} >{note.body}</li>
                     ))}
-                </ul>
+                </ul>*/}
             </div>
         </div>
     )

@@ -1,23 +1,22 @@
-import React, { useContext } from 'react'
+import React, {useContext} from 'react'
+import AuthContext from '../../context/AuthContext'
 import { Link, NavLink } from 'react-router-dom'
-import AuthContext from '../context/AuthContext'
 import {Navbar, Nav, Container} from 'react-bootstrap'
 
-
-
-
-const Header = () => {
+const ManagerHeader = () => {
     let { user, logoutUser } = useContext(AuthContext)
     return (
-        <>
-            <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark pills">
+       <>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark ">
               <Container>
-                <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand>Manager interface</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                    <Nav.Link as={NavLink} to = '/' exact>Home</Nav.Link>
+                    <Nav.Link as={NavLink} to='/manager' exact >Home</Nav.Link>
                     <Nav.Link as={NavLink} to="profile">profile</Nav.Link>
+                    <Nav.Link as={NavLink} to="categories">categories</Nav.Link>
+                    <Nav.Link as={NavLink} to="articles">articles</Nav.Link>
                   </Nav>
                   <Nav>
                   {user ?
@@ -27,8 +26,8 @@ const Header = () => {
                 </Navbar.Collapse>
               </Container>
             </Navbar>
-        </>
+       </>
     )
 }
 
-export default Header
+export default ManagerHeader;

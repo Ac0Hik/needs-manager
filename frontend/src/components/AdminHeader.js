@@ -6,18 +6,20 @@ import {Navbar, Nav, Container} from 'react-bootstrap'
 
 
 
-const Header = () => {
+const AdminHeader = () => {
     let { user, logoutUser } = useContext(AuthContext)
     return (
-        <>
-            <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark pills">
+       <>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark ">
               <Container>
-                <Navbar.Brand>React-Bootstrap</Navbar.Brand>
+                <Navbar.Brand>Admin interface</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                    <Nav.Link as={NavLink} to = '/' exact>Home</Nav.Link>
+                    <Nav.Link as={NavLink} to='/admin' exact >Home</Nav.Link>
                     <Nav.Link as={NavLink} to="profile">profile</Nav.Link>
+                    <Nav.Link as={NavLink} to="users">users</Nav.Link>
+                    <Nav.Link as={NavLink} to="requests">requests</Nav.Link>
                   </Nav>
                   <Nav>
                   {user ?
@@ -27,8 +29,8 @@ const Header = () => {
                 </Navbar.Collapse>
               </Container>
             </Navbar>
-        </>
+       </>
     )
 }
 
-export default Header
+export default AdminHeader;

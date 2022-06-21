@@ -1,4 +1,3 @@
-
 from unicodedata import category
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -7,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from django.contrib.auth.hashers import make_password
 
 from .serializers import *
 from base.models import *
@@ -22,6 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         token['is_staff'] = user.is_staff
+        token['is_manager'] = user.profiles.is_manager
         
         # ...
 
@@ -52,22 +53,70 @@ def getNotes(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many = True)
     return Response(serializer.data)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def adduser(request):
+   data = request.data
+   username = data['username']#username and the password
+   first_name = data['first_name']
+   last_name = data['last_name']
+   email = data['email']
+   is_staff = data['is_staff']
+   is_manager = data['is_manager']
+   if user := User.objects.create(username=username, password=make_password(username), first_name=first_name, last_name=last_name, email=email, is_staff=is_staff):
+      if profile := Profile.objects.create(user=user,is_manager=is_manager):
+        return Response('data has been posted successfully')
+      return Response('something went wrong with profile')
+   return Response('something went wrong with profile')
 
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def deleteuser(request, pk):
+    try:
+      User.objects.get(id=pk).delete()
+      return Response('user has been deleted successufully')
+    except:
+        return Response('an error has occured')
+
+#retrieves one user's information
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getUserInfo(request):
-    user = User.objects.get(id = request.user.id )
+def getUser(request, pk):
+    user = User.objects.get(id = pk )
     serializer = UserSerializer(user, many=False)
     
     return Response(serializer.data)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUser(request, pk):
+   data = request.data
+   username = data['username']#username and the password
+   first_name = data['first_name']
+   last_name = data['last_name']
+   email = data['email']
+   is_staff = data['is_staff']
+   is_manager = data['profiles']['is_manager']
+   if user := User.objects.get(id=pk):
+       user.username = username
+       user.first_name=first_name
+       user.last_name=last_name
+       user.email=email
+       user.is_staff=is_staff
+       user.save()
+       if profile := Profile.objects.get(user=user):
+        profile.is_manager = is_manager
+        profile.save()
+        return Response('user has been updated successfully')
+       return('could not update the profile')
+   return Response('an error has occured')
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -95,27 +144,18 @@ def fromData(request):
 
 
 
-@api_view(['POST'])
-def addRequest(request):
-    #(atricle_id,qte,basket)
-    data = request.data
-    requested_quantity  = data['article quantity']
-    observation = data['observation']
+@api_view(['GET'])
+def getRequests(request):
+    print('u here')
+    requests = Request.objects.all()
+    serializer = RequestSerializer(requests, many=True)
+    return Response(serializer.data)
 
-    teacher = Teacher.objects.get(user_id = data['userid'])        
-    article = Article.objects.get(id = data['article_id'])
-
-    if basket := Basket.objects.create(created_by = teacher):#needs to be saved:
-        if request := Request.objects.create(article= article, qte = requested_quantity, basket= basket, observation = observation ):
-            return Response('data has been posted successfully')
-        return Response('somehting went wrong with the request object')
-    return Response('somehting went wrong with the basket object')
-
-#----------------------------------admin views ------------------------------------ 
+#----------------------------------manager views ------------------------------------ 
 
 #categories   
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def getCategories(request):
     categories = Category.objects.all()
     serializer =  CategorySerializer(categories, many=True)
@@ -123,7 +163,7 @@ def getCategories(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def categoryDetail(request,pk):
     categories = Category.objects.get(id=pk)
     serializer =  CategorySerializer(categories, many=False)
@@ -131,7 +171,7 @@ def categoryDetail(request,pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def addCategory(request):
     #(name, description)
     serializer = CategorySerializer(data = request.data)
@@ -142,7 +182,7 @@ def addCategory(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def updateCategory(request,pk):
     #(name, description)
     category = Category.objects.get(id=pk)
@@ -154,7 +194,7 @@ def updateCategory(request,pk):
 
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def deleteCategory(request, pk):
     try:
       Category.objects.get(id=pk).delete()
@@ -166,7 +206,7 @@ def deleteCategory(request, pk):
 
 #articles
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def getArticles(request):
     articles = Article.objects.all()
     serializer =  ArticleSerializer(articles, many=True)
@@ -174,7 +214,7 @@ def getArticles(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def articleDetail(request, pk):
     article = Article.objects.get(id=pk)
     serializer = ArticleSerializer(article, many=False)
@@ -182,18 +222,21 @@ def articleDetail(request, pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def addArticle(request):
     #(name, description)
-    serializer = ArticleSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
+    data = request.data
+    category = Category.objects.get(id=data['category_id'])
+    articleName = data['name']
+    articledescription = data['description']
+    articlequanity = data['quantity']
+    if Article.objects.create(name=articleName, description = articledescription, quantity=articlequanity, category = category):
         return Response("information has been saved successfully")
     return Response('an error has occured')
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def updateArticle(request,pk):
     #(name, description)
     article = Article.objects.get(id=pk)
@@ -205,7 +248,7 @@ def updateArticle(request,pk):
 
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated, IsAdminUser])
+@permission_classes([IsAuthenticated])
 def deleteArticle(request, pk):
     try:
       Article.objects.get(id=pk).delete()
@@ -216,6 +259,7 @@ def deleteArticle(request, pk):
 #articles end
 
 #----------------------------------------------------------------------------------
+
 
 
        
