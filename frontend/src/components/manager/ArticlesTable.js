@@ -2,11 +2,15 @@ import React, {useContext, useState, useCallback, useEffect} from 'react'
 import { Table, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
+import { FaEdit,FaRegTrashAlt } from "react-icons/fa";
+import {BeatLoader} from 'react-spinners'
+
+
 
 const ArticlesTable = () => {
-    const [articles, setArticles] = useState([])
-    let { authTokens, logoutUser } = useContext(AuthContext)
-    const navigate = useNavigate(); 
+  const [articles, setArticles] = useState([])
+  let { authTokens, logoutUser } = useContext(AuthContext)
+  let [isloading, setLoading] = useState(true)
   
     let loadArticles = useCallback(async () => {
   
@@ -22,6 +26,8 @@ const ArticlesTable = () => {
     
         if (response.status === 200) {
           setArticles(data)
+          setLoading(false)
+
         } else if (response.statusText === 'Unauthorized') {
           logoutUser()
         }
@@ -53,31 +59,34 @@ const ArticlesTable = () => {
     return (
   
       <>
+      {isloading ?
+          <BeatLoader color={'#060b26'} loading={isloading}  size={150} />
+          :
   
       <Table striped bordered hover size="sm" className='mt-2'>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Quanity</th>
-              <th>Category</th>
-              <th>Action</th>
+              <th className='px-3'>#</th>
+              <th className='px-3'>Name</th>
+              <th className='px-3'>Description</th>
+              <th className='px-3'>Quanity</th>
+              <th className='px-3'>Category</th>
+              <th className='px-3'>Action</th>
             </tr>
           </thead>
           <tbody>
             {articles.map(article => {
               return (
                 <tr key={article.id}>
-                  <td>{article.id}</td>
-                  <td>{article.name}</td>
-                  <td>{article.description}</td>
-                  <td>{article.quantity}</td>
-                  <td>{article.category.name}</td>
-                  <td>
-                    <form onSubmit={e=>deleteArticle(e, article.id)}>
-                      <Link  to={`update/${article.id}`}><Button variant="primary" className='mx-2'>edit</Button></Link>
-                      <input type="submit" value="delete" className='btn btn-danger ' />
+                  <td className='px-3'>{article.id}</td>
+                  <td className='px-3'>{article.name}</td>
+                  <td className='px-3'>{article.description}</td>
+                  <td className='px-3'>{article.quantity}</td>
+                  <td className='px-3'>{article.category.name}</td>
+                  <td className='px-3'>
+                    <form onSubmit={e=>deleteArticle(e, article.id)} className="d-flex justify-content-around">
+                      <Link  to={`update/${article.id}`}><FaEdit variant="warning" size={'1.7rem'}/></Link>
+                      <Button type='submit' variant='danger'> <FaRegTrashAlt /></Button>
                     </form>
                   </td>
                 </tr>
@@ -85,7 +94,7 @@ const ArticlesTable = () => {
             })}
   
           </tbody>
-        </Table>
+        </Table>}
       </>
     )
   }

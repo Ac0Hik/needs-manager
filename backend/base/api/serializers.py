@@ -38,21 +38,21 @@ class ArticleSerializer(ModelSerializer):
         fields = '__all__'
 
 class ItemSerializer(ModelSerializer):
+    article = ArticleSerializer(read_only = True, many=False)
     class Meta:
         model = Item
-        fields= '__all__'
+        fields= ['id','basket','article','qte_requested','state','observation']
     
 class BaketSerializer(ModelSerializer):
-    items = ItemSerializer(read_only = True, many=True)
+    items = ItemSerializer(read_only = False, many=True)
     class Meta:
         model = Basket
-        fields = ['id','created_at','items']
-        depth = 3
+        fields = ['id','created_at','basket_state','items']
 
 
 class RequestSerializer(ModelSerializer):
-    basket = BaketSerializer(read_only = True, many=False)
+    basket = BaketSerializer(read_only = False, many=False)
     class Meta:
         model = Request 
-        fields = ['id','created_by','created_at', 'basket']
-        depth = 3
+        fields = ['id','created_by_id','created_at', 'basket']
+        depth = 2

@@ -74,7 +74,6 @@ const EditArticle = () => {
     })
 
     if (response.status === 200) {
-      alert('article has been updated succefuly')
       navigate('/manager/articles')
     } else {
       alert('Something went wrong!')

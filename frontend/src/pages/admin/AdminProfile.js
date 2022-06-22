@@ -87,7 +87,7 @@ export const AdminProfile = () => {
                 <Button className="pl-2" variant="primary" type="submit">
                     Update
                 </Button>
-                <Link to="/admin"><Button variant="dark" className='ms-2' >
+                <Link to="/admin/profile"><Button variant="dark" className='ms-2' >
                     Cancel
                 </Button></Link>
             </Form>

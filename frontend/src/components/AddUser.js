@@ -43,7 +43,6 @@ const AddUser = () => {
             })
     
             if(response.status === 200){
-               alert('user has been added succefuly')
                navigate('/admin/users')
             }else{
                 alert('Something went wrong!')

@@ -3,9 +3,11 @@ import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import {BeatLoader} from 'react-spinners'
 
 const ManagerProfile = () => {
   const [profile, setProfile] = useState({})
+  let [isloading, setLoading] = useState(true)
     let {authTokens,user} = useContext(AuthContext)
     const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ const ManagerProfile = () => {
         const data= await response.json()
         if(response.status === 200){
          setProfile(data)
+         setLoading(false)
         }else{
           console.log('error');
         }
@@ -62,8 +65,12 @@ const ManagerProfile = () => {
     }
 
     return (
-        <>
-            <h3>Profile</h3>
+    <>
+        {isloading ?
+          <BeatLoader color={'#060b26'} loading={isloading}  size={150} />
+          :
+          <>
+            <h3>Update Profile</h3>
             <p className="fst-italic">lorem sdovhwefvwer'coklnodcpsdmcpo isdocercn=ercvre</p>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" >
@@ -85,11 +92,14 @@ const ManagerProfile = () => {
                 <Button className="pl-2" variant="primary" type="submit">
                     Update
                 </Button>
-                <Link to="/manager"><Button variant="dark" className='ms-2' >
+                <Link to="/manager/profile"><Button variant="dark" className='ms-2' >
                     Cancel
                 </Button></Link>
             </Form>
-        </>)
+        </>
+        }
+    </>
+    )
 
 
 }

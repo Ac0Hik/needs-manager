@@ -12,6 +12,10 @@ urlpatterns = [
     path('notes/', views.getNotes),
 
     path('requests/', views.getRequests),
+    path('requests/validate', views.processRequest),
+    path('requests/unhandled', views.getUnhandledRequests),
+    path('requests/add', views.addRequest),
+    path('requests/<int:pk>', views.getRequest),
 
     path('users/', views.getUsers),
     path('users/add', views.adduser),

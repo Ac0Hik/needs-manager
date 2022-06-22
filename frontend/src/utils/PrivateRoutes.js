@@ -7,7 +7,11 @@ const PrivateRoutes = () => {
 
 
     return(
-        user ? <Outlet/> : <Navigate to="/login" /> 
+        user ?
+                user.is_staff ? <Navigate to="/admin" /> 
+                              : user.is_manager ?  <Navigate to="/manager" /> 
+                                               :  <Outlet/> 
+              :   <Navigate to="/login" /> 
     )
 }
 

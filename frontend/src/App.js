@@ -33,6 +33,11 @@ import EditArticle from './pages/manager/articles/EditArticle';
 
 
 import LoginPage from './pages/LoginPage';
+import HandleSingleRequest from './pages/admin/HandleSingleRequest';
+import PageNotFound from './components/PageNotFound';
+import ProfileCard from './components/ProfileCard';
+import UserProfileCard from './components/UserProfileCard';
+import ManagerProfileCard from './components/ManagerProfileCard';
 
 
 function App() {
@@ -51,20 +56,24 @@ function App() {
             <Route element={<StaffRoutes />}>
                 <Route path = '/admin' element={<AdminLayout />}  exact >
                   <Route index element={<AdminPage />} />
-                  <Route path='profile' element={<AdminProfile />} />
+                  <Route path='profile/update' element={<AdminProfile />} />
+                  <Route path='profile' element={<ProfileCard />} />
                   <Route path='users' element={<Users />} />
+                  <Route path='users/profile/:userid' element={<UserProfileCard />} />
                   <Route path='users/add' element ={<AddUser />} />
                   <Route path='users/update/:userid' element={<EditUser />} />
 
                   <Route path='requests' element={<Requests />} />
-                  <Route path='request/:requestid' element={<SingleRequest />} />
+                  <Route path='requests/handle/:requestid/:userid/' element={<HandleSingleRequest />} />
+
                </Route>
             </Route>
 
             <Route element={<ManagersRoutes />}>
               <Route path='/manager' element={<ManagerLayout/>} exact>
                 <Route index element={<ManagerPage />}/>
-                <Route path='profile' element={<ManagerProfile />} />
+                <Route path='profile/update' element={<ManagerProfile />} />
+                <Route path='profile' element={<ManagerProfileCard />} />
 
                 <Route path='categories' element={<Categories />} />
                 <Route path='categories/add' element ={<AddCategory />} />
@@ -76,7 +85,8 @@ function App() {
               </Route>
 
             </Route>
-          
+            <Route path='*' element={<PageNotFound />} />
+            <Route path='/card' element={<ProfileCard />} />
             <Route element={<LoginPage />} path="/login" />
 
 

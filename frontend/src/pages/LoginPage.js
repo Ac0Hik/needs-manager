@@ -6,9 +6,11 @@ import Button from 'react-bootstrap/Button'
 const LoginPage = () => {
     let { loginUser } = useContext(AuthContext)
     return (
-        <div className='container mt-5 '>
+        <div className='container mt-5  '>
+            <h1>Welcome to Needs Manager</h1>
+            <h1>Please login </h1>
             <div className='h-100 d-flex justify-content-center align-items-center '>
-                <Form onSubmit={loginUser} className="mt-5 p-5 border border-primary rounded w-50">
+                <Form onSubmit={loginUser} className="p-5 ">
                     <Form.Group className="mb-3" controlId="username">
                         <Form.Label>username:</Form.Label>
                         <Form.Control name="username" type="text" placeholder="Enter username" />
@@ -17,9 +19,9 @@ const LoginPage = () => {
                         <Form.Label>Password:</Form.Label>
                         <Form.Control name="password" type="password" placeholder="Password" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button style={{backgroundColor:'#060b26'}} type="submit">Submit</Button>
                 </Form>
-           </div>
+            </div>
         </div>
     )
 }

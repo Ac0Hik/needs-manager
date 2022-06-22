@@ -146,11 +146,64 @@ def fromData(request):
 
 @api_view(['GET'])
 def getRequests(request):
-    print('u here')
     requests = Request.objects.all()
     serializer = RequestSerializer(requests, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getRequest(request,pk):
+    requests = Request.objects.get(id=pk)
+    serializer = RequestSerializer(requests, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addRequest(request):
+    basket = Basket.objects.create()
+    userRequest = Request.objects.create(basket=basket,created_by=request.user)
+    print(request.user)
+    items = request.data["basket"]["items"]
+    for item in items:
+        quantity = item['qte_requested']
+        observation = item['observation']
+        articleId = item['article']
+        Item.objects.create(basket = basket, qte_requested=quantity, observation=observation, article_id=articleId)
+        print(item)
+
+    return Response('data has been posted')
+
+    
+    
+
+@api_view(['GET'])
+def getUnhandledRequests(request):
+    requests = Request.objects.filter(basket__basket_state ='BP')
+    serializer = RequestSerializer(requests, many=True)
+    return Response(serializer.data)
+    
+
+
+@api_view(['PUT'])
+def processRequest(request):
+    basket_pk = request.data['basket']['id']
+    reqItems=request.data['basket']['items']
+    for  item in reqItems:#update items' states an articles' quantities
+        itemID = item["id"]
+        state = "A" if item["state"]== "A" else "R"
+        qteRequested = item["qte_requested"]
+        articleID = item["article"]
+        try:
+            Item.objects.filter(id = itemID).update(state=state)
+            if state == "A":#request was accepted
+                article = Article.objects.get(id=articleID)
+                article.quantity -= qteRequested
+                if article.quantity >= 0:
+                  article.save()
+        except:
+            return Response('an error has occured')
+
+    Basket.objects.filter(id=basket_pk).update(basket_state = 'P')
+    return Response('request has been proccessed successfully')
 #----------------------------------manager views ------------------------------------ 
 
 #categories   

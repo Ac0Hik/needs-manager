@@ -56,7 +56,6 @@ const AddArticle = () => {
     })
 
     if (response.status === 200) {
-      alert('article has been added succefuly')
       navigate('/manager/articles')
     } else {
       alert('Something went wrong!')

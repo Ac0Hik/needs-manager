@@ -52,7 +52,6 @@ const EditCategory = () => {
       })
 
       if(response.status === 200){
-         alert('user has been updated succefuly')
          navigate('/manager/categories')
       }else{
           alert('Something went wrong!')

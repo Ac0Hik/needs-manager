@@ -37,7 +37,6 @@ const AddCategory = () => {
           })
   
           if(response.status === 200){
-             alert('category has been added succefuly')
              navigate('/manager/categories')
           }else{
               alert('Something went wrong!')

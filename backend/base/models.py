@@ -50,7 +50,12 @@ class Profile(models.Model):#could be the profile class, one to one relationship
 
 
 class Basket(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)   
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Type(models.TextChoices):
+        Being_proccessed = 'BP'
+        Processed = 'P'   
+
+    basket_state = models.fields.CharField(max_length=10, choices=Type.choices, default='BP')
     def __str__(self) -> str:
        return self.created_at.strftime("%m/%d/%Y, %H:%M:%S")
    

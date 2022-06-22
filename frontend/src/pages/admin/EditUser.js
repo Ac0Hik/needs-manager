@@ -61,7 +61,6 @@ const EditUser = () => {
       })
 
       if(response.status === 200){
-         alert('user has been updated succefuly')
          navigate('/admin/users')
       }else{
           alert('Something went wrong!')
