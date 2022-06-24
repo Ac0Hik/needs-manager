@@ -12,18 +12,24 @@ urlpatterns = [
     path('notes/', views.getNotes),
 
     path('requests/', views.getRequests),
-    path('requests/validate', views.processRequest),
+    path('requests/process', views.processRequest),
     path('requests/unhandled', views.getUnhandledRequests),
     path('requests/add', views.addRequest),
     path('requests/<int:pk>', views.getRequest),
+    #requests retrieved by the user not admin
+    path('requests/userRequests', views.getUserRequests),
+    path('requests/userRequests/<int:pk>', views.getUserRequestDetails),
+
+
 
     path('users/', views.getUsers),
     path('users/add', views.adduser),
     path('users/delete/<int:pk>', views.deleteuser),
     path('users/update/<int:pk>', views.updateUser),
     path('users/<int:pk>', views.getUser),
+    path('users/idUsername', views.getUserIDdict),
 
-    path('formdata/', views.fromData),
+    path('formdata', views.fromData),
     
     path('categories/', views.getCategories),
     path('categories/<int:pk>/', views.categoryDetail),

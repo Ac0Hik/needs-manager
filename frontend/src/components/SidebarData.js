@@ -3,6 +3,7 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import {BiCategoryAlt} from "react-icons/bi";
+import {BsFillCalendarCheckFill} from "react-icons/bs"
 
 export const AdminSidebarData = [
   {
@@ -68,28 +69,17 @@ export const UserSidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Event achik ',
-    path: '/eventList',
-    icon: <IoIcons.IoIosPaper />,
+    title: 'Profile ',
+    path: 'profile',
+    icon: <FaIcons.FaUserCircle />,
     cName: 'nav-text'
   },
   {
-    title: 'Manage Users',
-    path: "users",
-    icon: <FaIcons.FaUsersCog />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'professeurs',
-    path: '/professeurs',
-    icon: <IoIcons.IoMdPeople />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'requested events',
-    path: '/requestedEvents',
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    title: 'Follow up',
+    path: "requests/followUp",
+    icon: <BsFillCalendarCheckFill />,
     cName: 'nav-text'
   },
   
 ];
+

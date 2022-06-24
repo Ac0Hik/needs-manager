@@ -17,7 +17,7 @@ import  Users  from './pages/admin/Users';
 import AddUser from './components/AddUser';
 import EditUser from './pages/admin/EditUser';
 import Requests from './pages/admin/Requests';
-import SingleRequest from './pages/admin/SingleRequest';
+
 
 
 import ManagerLayout from './utils/layouts/ManagerLayout';
@@ -38,7 +38,11 @@ import PageNotFound from './components/PageNotFound';
 import ProfileCard from './components/ProfileCard';
 import UserProfileCard from './components/UserProfileCard';
 import ManagerProfileCard from './components/ManagerProfileCard';
-
+import Tester from './components/Tester';
+import FollowUp from './pages/users/FollowUp';
+import FollowUpDetails from './pages/users/FollowUpDetails';
+import AddRequestForm from './pages/users/AddRequestForm';
+import ItemsList from './components/ItemsList';
 
 function App() {
   return (
@@ -49,7 +53,13 @@ function App() {
             <Route element = {<PrivateRoutes />}>
               <Route path = '/' element={<UsersLayout />}  exact >
                 <Route index element={<HomePage />} /> 
-                <Route path='profile' element={<Profile />} />
+                <Route path='profile' element={<UserProfileCard />} />
+                <Route path='profile/update' element={<Profile />} />
+                <Route path='requests/followUp' element={<FollowUp />} />
+                <Route path='requests/followUp/:rq_id' element={<FollowUpDetails />} />
+                <Route path='requests/add' element={<AddRequestForm />} />
+
+
               </Route>
             </Route>
 
@@ -62,7 +72,7 @@ function App() {
                   <Route path='users/profile/:userid' element={<UserProfileCard />} />
                   <Route path='users/add' element ={<AddUser />} />
                   <Route path='users/update/:userid' element={<EditUser />} />
-
+                  <Route path='card' element={<Tester/>} />
                   <Route path='requests' element={<Requests />} />
                   <Route path='requests/handle/:requestid/:userid/' element={<HandleSingleRequest />} />
 
@@ -86,7 +96,6 @@ function App() {
 
             </Route>
             <Route path='*' element={<PageNotFound />} />
-            <Route path='/card' element={<ProfileCard />} />
             <Route element={<LoginPage />} path="/login" />
 
 

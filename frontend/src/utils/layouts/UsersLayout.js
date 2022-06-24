@@ -1,13 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from '../../components/Header'
+import UserNavbar from '../../components/UserNavbar'
 
 const UsersLayout = () => {
   return (
     <>
-      <Header />
-      <h1>this is the shared layout for regular users</h1>
-      <Outlet />
+      <UserNavbar />
+      <div className='container py-3'>
+        <Outlet />
+      </div>
     </>
   )
 }

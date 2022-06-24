@@ -99,7 +99,7 @@ const EditArticle = () => {
         <Form.Control name="description" type="text" value={article.description} onChange={(e) => handleChange(e)} required />
       </Form.Group>
       <Form.Group className="mb-3" >
-        <Form.Label>Quanity</Form.Label>
+        <Form.Label>Quantity</Form.Label>
         <Form.Control name="quantity" type="number" value={article.quantity} onChange={(e) => handleChange(e)} required />
       </Form.Group>
       <Form.Group className="mb-3" >

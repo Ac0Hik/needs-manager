@@ -30,10 +30,7 @@ export const AuthProvider = ({children}) => {
             setAuthTokens(data)
             setUser(jwt_decode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
-            console.log(user.is_staff);
-           user?.is_staff ? navigate(`admin/`)
-                          : user?.is_manager ? navigate(`manager/`)
-                                             : navigate(`/`)
+            user ? navigate(`/`) : navigate('/login')
         }else{
             alert('Something went wrong!')
         }

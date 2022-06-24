@@ -9,7 +9,7 @@ const Users  = () => {
     <>
       <h2>Users</h2>
       <p className='fst-italic'>dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak</p>
-      <Link to="add" ><Button variant="success" >Create new user <FaPlusSquare fill='#febc0a' size={'1.5rem'}/></Button></Link>
+      <Link to="add" ><Button variant="success" >Create new user <FaPlusSquare fill='#fff' size={'1.5rem'}/></Button></Link>
       <UsersTable />
     </>
 
