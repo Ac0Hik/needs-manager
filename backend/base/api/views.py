@@ -180,17 +180,11 @@ def getUnhandledRequests(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addRequest(request):
-    print(request.data)
-    # basket = Basket.objects.create()
-    # userRequest = Request.objects.create(basket=basket,created_by=request.user)
-    # print(request.user)
-    # items = request.data["basket"]["items"]
-    # for item in items:
-    #     quantity = item['qte_requested']
-    #     observation = item['observation']
-    #     articleId = item['article']
-    #     Item.objects.create(basket = basket, qte_requested=quantity, observation=observation, article_id=articleId)
-    #     print(item)
+    items = request.data
+    basket = Basket.objects.create()
+    Request.objects.create(basket=basket,created_by=request.user)
+    for item in items:
+      Item.objects.create(basket = basket, qte_requested=item['qte'], observation=item['observation'], article_id=item['article']['id'])
 
     return Response('data has been posted')
 
