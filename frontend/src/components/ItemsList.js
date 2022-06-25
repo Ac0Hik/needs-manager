@@ -1,45 +1,45 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { Button } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './ItemsList.css'
 
-const ItemsList = ({ itemsList, removeItem, editItem, articles, categories }) => {
+const ItemsList = ({itemsList, removeItem, editItem, setIsCategorySelected, handleSubmit }) => {
 
-    const getCategoryName = (ID) => categories.find(element => element.id === ID);
-    const getArticleName = (ID) => articles.find(element => element.id === ID);
 
     return (
         <div className='liiista'>
-            <h1 >Items List</h1>
             <div className='table-wrapper'>
+            <h1 className='mt-3'>Items List</h1>
 
                 <table className='fl-table'>
+                    <tbody>
                     <tr>
-                        <th>cat</th>
-                        <th>article</th>
-                        <th>qte</th>
-                        <th>observation</th>
+                        <th>Category</th>
+                        <th>Article</th>
+                        <th>Quantity</th>
+                        <th>Observation</th>
                         <th>Action</th>
                     </tr>
                     {itemsList.map((item) => {
                         const {
                             id,
-                            article_id,
-                            category_id,
+                            article,
+                            category,
                             observation,
                             qte,
 
                         } = item;
-                       console.log( getCategoryName(category_id));
+
                         return (
                             <tr key={item.id}>
-                                <td>{category_id}</td>
-                                <td>{article_id}</td>
+                                <td>{category.name}</td>
+                                <td>{article.name}</td>
                                 <td>{qte}</td>
                                 <td>{observation}</td>
                                 <td> <button
                                     type='button'
                                     className='edit-btn'
-                                    onClick={() => editItem(id)}
+                                    onClick={() => { setIsCategorySelected(true); editItem(id)}}
                                 >
                                     <FaEdit />
                                 </button>
@@ -49,14 +49,16 @@ const ItemsList = ({ itemsList, removeItem, editItem, articles, categories }) =>
                                         onClick={() => removeItem(id)}
                                     >
                                         <FaTrash />
-                                    </button></td>
+                                    </button>
+                                </td>
                             </tr>
 
 
                         );
                     })}
+                    </tbody>
                 </table>
-
+            <Button variant='success my-2 mx-4' onClick={()=>{ handleSubmit()}}>Send Request</Button>                     
             </div>
         </div>
     );

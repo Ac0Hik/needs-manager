@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Row, Col, Card, Button, Container } from 'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 import AuthContext from '../../context/AuthContext'
-import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners'
 
 const Requests = () => {

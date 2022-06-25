@@ -44,19 +44,23 @@ const FollowUp = () => {
             <Row xs={1} md={2} className="g-4">
               {requests.map((request) => (
                 <Col>
-                  <Card className="px-5 pt-3"  border={ request.basket.basket_state === 'P' ? "success":"danger"}>
+                  <Card className="px-5 pt-3"  border={ request.basket.basket_state === 'P' ? "success": request.basket.basket_state ==='BP'? 'secondary':"danger"}>
                     <Card.Img className="round img-fluid" style={{ width: "150px", height: "150px" }} variant="top" src="https://icon-library.com/images/free-avatar-icon/free-avatar-icon-10.jpg" />
                     <Card.Body>
                       <Card.Title>{request.created_at?.slice(0, 10)}</Card.Title>
                       <Card.Title >{user.username}</Card.Title>
-                       {request.basket.basket_state === 'BP' ?                       
+                       {request.basket.basket_state === 'BP' ? 
+                       <>
                         <Card.Text className='fst-italic'>Being Processed</Card.Text>
+                        <Button style={{backgroundColor:'#060b26'}} type="submit" disabled>view</Button>
+                       </>                      
                       :
+                      <>
                         <Card.Text className='fst-italic'>Processed</Card.Text>
-
+                        <Link to={`${request.id}`}><Button style={{backgroundColor:'#060b26'}} type="submit">view</Button></Link>
+                      </>
                       }
-                        <Link to={`${request.id}`}><Button style={{backgroundColor:'#060b26'}} type="submit">view</Button>
-                        </Link>
+
                     </Card.Body>
                   </Card>
                 </Col>

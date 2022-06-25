@@ -38,17 +38,17 @@ import PageNotFound from './components/PageNotFound';
 import ProfileCard from './components/ProfileCard';
 import UserProfileCard from './components/UserProfileCard';
 import ManagerProfileCard from './components/ManagerProfileCard';
-import Tester from './components/Tester';
 import FollowUp from './pages/users/FollowUp';
 import FollowUpDetails from './pages/users/FollowUpDetails';
 import AddRequestForm from './pages/users/AddRequestForm';
-import ItemsList from './components/ItemsList';
+
 
 function App() {
   return (
     <div className="App">
       <Router >
         <AuthProvider>
+
           <Routes>
             <Route element = {<PrivateRoutes />}>
               <Route path = '/' element={<UsersLayout />}  exact >
@@ -72,7 +72,6 @@ function App() {
                   <Route path='users/profile/:userid' element={<UserProfileCard />} />
                   <Route path='users/add' element ={<AddUser />} />
                   <Route path='users/update/:userid' element={<EditUser />} />
-                  <Route path='card' element={<Tester/>} />
                   <Route path='requests' element={<Requests />} />
                   <Route path='requests/handle/:requestid/:userid/' element={<HandleSingleRequest />} />
 
