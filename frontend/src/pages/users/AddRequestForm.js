@@ -3,11 +3,13 @@ import ItemsList from '../../components/ItemsList';
 import ItemsForm from './ItemsForm';
 import { BeatLoader } from 'react-spinners'
 import AuthContext from '../../context/AuthContext'
+import { Navigate } from 'react-router-dom';
 
 
 
 
 const AddRequestForm = () => {
+  const navigate = Navigate()
   let {authTokens} = useContext(AuthContext)
   const [itemsList, setItemsList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +25,7 @@ const AddRequestForm = () => {
     negativeNumber:'',
     blackListed:''
   })
+  const [failedSend, setFailedSend] = useState('')
 
 
 
@@ -62,20 +65,20 @@ const AddRequestForm = () => {
 
   const handleSubmit = async () => {
     console.log(itemsList);
-  //   let response = await fetch(`${process.env.REACT_APP_URL}/api/requests/add`, {
-  //     method:'POST',
-  //     headers:{
-  //         'Content-Type':'application/json',
-  //         'Authorization':'Bearer ' + String(authTokens.access)
-  //     },
-  //     body:JSON.stringify(itemsList)
-  // })
+    let response = await fetch(`${process.env.REACT_APP_URL}/api/requests/add`, {
+      method:'POST',
+      headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer ' + String(authTokens.access)
+      },
+      body:JSON.stringify(itemsList)
+  })
 
-  // if(response.status === 200){
-  //   alert('perfectoo')
-  // }else{
-  //     alert('Something went wrong!')
-  // }
+  if(response.status === 200){
+    navigate('/')
+  }else{
+      setFailedSend('the request could not be sent for some reason')
+  }
 
 
   }
@@ -199,6 +202,7 @@ const AddRequestForm = () => {
         :
       <>
       <h1>Form page</h1>
+      {<h2 className='text-danger'>  {failedSend}</h2>}
 
       <ItemsForm
         error={error}
