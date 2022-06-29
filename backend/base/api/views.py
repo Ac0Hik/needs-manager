@@ -139,7 +139,7 @@ def getUserIDdict(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminUser])
 def getRequests(request):
-    requests = Request.objects.all()
+    requests = Request.objects.all().order_by('-created_at')
     serializer = RequestSerializer(requests, many=True)
     return Response(serializer.data)
 

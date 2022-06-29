@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners'
 import AuthContext from '../../context/AuthContext';
@@ -11,7 +11,7 @@ const FollowUpDetails = () => {
     const [request, setRequest] = useState({})
     const [pdfLink, setPDFlink] = useState('')
     const [items, setItems] = useState([])
-
+    const [displayLink, setDisplayLink] = useState(false)
 
     const getRequest = async () => {
 
@@ -28,37 +28,6 @@ const FollowUpDetails = () => {
         if (response.status === 200) {
             setRequest(data)
             setLoading(false)
-            if(request.basket.items){
-
-                const FilteredList = request.basket.items
-                console.log(FilteredList)
-                FilteredList.map(item => {
-                    const {
-                        article,
-                        category,
-                        qte_requested,
-                        observation,
-                        state
-                    } = item;
-    
-                    const articleName = article.name;
-                    const categoryName = category.name;
-                    const newItem = {
-                        "category": categoryName,
-                        "article": articleName,
-                        "qte": qte_requested,
-                        "description": observation
-                    }
-                    if (state === "A") {
-                        setItems([...items, newItem])
-                    }
-    
-                })
-            }
-    
-                getDownloadUrl(items)
-            
-
         } else {
             console.log('request could not be loaded')
         }
@@ -87,13 +56,45 @@ const FollowUpDetails = () => {
         }, [])
 
         let data = await response.json()
-
+        console.log(itemms);
         if (response.status === 200) {
-            console.log(data);
             setPDFlink(data.download_url)
         }
     }
+     
+    const donwloadURL =  async ()=>{
+        
+        setItems([{
+            "category": '',
+            "article": '',
+            "qte": '',
+            "description": ''
+        }])
+        request.basket.items.map(item => {
 
+            const articleName = item.article.name;
+            const categoryName = item.article.category.name;
+            const qte_requested = item.qte_requested
+            const observation = item.observation
+            const newItem = {
+                "category": categoryName,
+                "article": articleName,
+                "qte": qte_requested,
+                "description": observation
+            };
+
+            if (item.state === "A") {
+                setItems([...items, newItem])
+            }
+
+
+        })
+        getDownloadUrl(items)
+        if(pdfLink){
+            setDisplayLink(true)
+        }
+
+    }
 
     useEffect(() => {
         getRequest();
@@ -151,7 +152,13 @@ const FollowUpDetails = () => {
 
                                                 }
                                             </Card.Text>
-                                            <Button style={{ backgroundColor: '#060b26' }}><a href={pdfLink ? pdfLink : ''}>Print</a></Button>
+                                            <Button style={{ backgroundColor: '#060b26' }} onClick={donwloadURL}>Generate PDF</Button>
+                                            {
+                                                displayLink ?
+                                                <Button style={{ backgroundColor: '#060b26' }}> <a href={pdfLink} target="_blank">Download</a> </Button>
+                                                :
+                                                null
+                                            }
                                         </Card.Body>
                                     </Col>
                                 </Row>
@@ -168,3 +175,4 @@ const FollowUpDetails = () => {
 }
 
 export default FollowUpDetails
+

@@ -1,14 +1,18 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import AuthContext from '../context/AuthContext'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 const LoginPage = () => {
-    let { loginUser } = useContext(AuthContext)
+    let { loginUser, error } = useContext(AuthContext)
+
     return (
         <div className='container mt-5  '>
             <h1>Welcome to Needs Manager</h1>
             <h1>Please login </h1>
+            <div className='d-flex justify-content-center'>
+            <h5 className='text-danger'>{error}</h5>
+            </div>
             <div className='h-100 d-flex justify-content-center align-items-center '>
                 <Form onSubmit={loginUser} className="p-5 ">
                     <Form.Group className="mb-3" controlId="username">

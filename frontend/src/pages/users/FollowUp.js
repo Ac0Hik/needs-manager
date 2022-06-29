@@ -4,12 +4,24 @@ import AuthContext from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners'
 
+
+
 const FollowUp = () => {
-    const { authTokens, user } = useContext(AuthContext)
-    let [requests, setRequests] = useState([])
-    const [isloading, setIsLoading] = useState(true)
+  const { authTokens, user } = useContext(AuthContext)
+  let [requests, setRequests] = useState([])
+  const [isloading, setIsLoading] = useState(true)
   
-    const getRequests = async () => {
+  const avatars = useState([ 
+    'https://static.vecteezy.com/system/resources/previews/000/439/863/non_2x/vector-users-icon.jpg',
+    'https://c.neh.tw/thumb/f/720/comvecteezy420553.jpg',
+    'https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg'
+  ])
+  
+  const randomIndex = ()=>{
+    const number = Math.random()*3
+    return number
+  }
+  const getRequests = async () => {
       let response = await fetch(`${process.env.REACT_APP_URL}/api/requests/userRequests`, {
         method: 'GET',
         headers: {
@@ -22,7 +34,9 @@ const FollowUp = () => {
   
       if (response.status === 200) {
         setRequests(data)
-        setIsLoading(false)
+        setTimeout(()=>{
+          setIsLoading(false)
+        },3000)
       } else {
         console.log('requests could not be loaded')
       }
@@ -43,9 +57,9 @@ const FollowUp = () => {
           <Container>
             <Row xs={1} md={2} className="g-4">
               {requests.map((request) => (
-                <Col>
+                <Col key={request.id}>
                   <Card className="px-5 pt-3"  border={ request.basket.basket_state === 'P' ? "success": request.basket.basket_state ==='BP'? 'secondary':"danger"}>
-                    <Card.Img className="round img-fluid" style={{ width: "150px", height: "150px" }} variant="top" src="https://icon-library.com/images/free-avatar-icon/free-avatar-icon-10.jpg" />
+                    <Card.Img className="round img-fluid" style={{ width: "150px", height: "150px" }} variant="top" src={'https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg'} />
                     <Card.Body>
                       <Card.Title>{request.created_at?.slice(0, 10)}</Card.Title>
                       <Card.Title >{user.username}</Card.Title>

@@ -27,7 +27,6 @@ const UserProfileCard = () => {
         getUser()
     }, [])
     return (
-
         <div className='container d-flex justify-content-center'>
             <div class="card-container px-3">
                 <span class="pro">Professor</span>
@@ -37,7 +36,7 @@ const UserProfileCard = () => {
                 <p class='userEmail'>{currentUser.email}</p>
                 <div class="buttons">
                     <button class="primary">
-                        <Link to={`update`} style={{ textDecoration: 'none' }}>Update</Link>
+                        <Link to={`/admin/users/update/${currentUser.id}`} style={{ textDecoration: 'none' }}>Update</Link>
                     </button>
                 </div>
                 <div class="skills">

@@ -12,27 +12,33 @@ export const AuthProvider = ({children}) => {
     let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
     let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
     let [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
 
     const navigate = useNavigate()
 
     let loginUser = async (e )=> {
         e.preventDefault()
-        let response = await fetch(`${process.env.REACT_APP_URL}/api/token/`, {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
-        })
-        let data = await response.json()
-
-        if(response.status === 200){
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
-            user ? navigate(`/`) : navigate('/login')
+        if(!e.target.username.value || !e.target.password.value ){
+            setError('feilds can not be blank')
         }else{
-            alert('Something went wrong!')
+            let response = await fetch(`${process.env.REACT_APP_URL}/api/token/`, {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
+            })
+            let data = await response.json()
+    
+            if(response.status === 200){
+                setAuthTokens(data)
+                setUser(jwt_decode(data.access))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+                setError('')
+                user ? navigate(`/`) : navigate('/login')
+            }else{
+                setError('Wrong information please try again')
+            }
         }
     }
 
@@ -75,6 +81,7 @@ export const AuthProvider = ({children}) => {
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
+        error:error,
     }
 
 
