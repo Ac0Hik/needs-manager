@@ -65,9 +65,8 @@ const AdminPage = () => {
                 <Card.Title >{usernames.find(user => user["id"] === request.created_by_id).username}</Card.Title>
                   <Card.Text className='fst-italic'>{request.basket.basket_state}</Card.Text>
                   <Card.Text>
-                    This is a longer card with supporting text below as a natural
-                    lead-in to additional content. This content is a little bit
-                    longer.
+                    This is an unhandled request by {usernames.find(user => user["id"] === request.created_by_id).username}.
+                    Sent the {request.created_at?.slice(0,10)}
                   </Card.Text>
                   <Link  to={`requests/handle/${request.id}/${request.created_by_id}/`}><Button style={{backgroundColor:'#060b26'}} className='mx-2'>view</Button></Link>
                 </Card.Body>

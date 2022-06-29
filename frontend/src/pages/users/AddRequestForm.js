@@ -3,13 +3,13 @@ import ItemsList from '../../components/ItemsList';
 import ItemsForm from './ItemsForm';
 import { BeatLoader } from 'react-spinners'
 import AuthContext from '../../context/AuthContext'
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 const AddRequestForm = () => {
-  const navigate = Navigate()
+  const navigate = useNavigate()
   let {authTokens} = useContext(AuthContext)
   const [itemsList, setItemsList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);

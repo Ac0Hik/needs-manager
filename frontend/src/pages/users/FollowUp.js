@@ -38,7 +38,7 @@ const FollowUp = () => {
         <BeatLoader color={'#060b26'} loading={isloading} size={150} />
         :
         <>
-          <h1>ALL Requests</h1>
+          <h1>Follow up</h1>
            <Button className='mb-4' style={{backgroundColor: '#060b26'}}><Link style={{ textDecoration: 'none', color: '#fff' }} to='/requests/add'>New Request?</Link></Button>
           <Container>
             <Row xs={1} md={2} className="g-4">
