@@ -4,7 +4,7 @@ import MyNavbar from './MyNavbar'
 
 const AdminHeader = () => {
     return (
-            <MyNavbar/>
+        <MyNavbar/>
     )
 }
 

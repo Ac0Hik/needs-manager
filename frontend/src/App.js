@@ -74,7 +74,6 @@ function App() {
                   <Route path='users/update/:userid' element={<EditUser />} />
                   <Route path='requests' element={<Requests />} />
                   <Route path='requests/handle/:requestid/:userid/' element={<HandleSingleRequest />} />
-
                </Route>
             </Route>
 
@@ -96,7 +95,6 @@ function App() {
             </Route>
             <Route path='*' element={<PageNotFound />} />
             <Route element={<LoginPage />} path="/login" />
-
 
           </Routes>
         </AuthProvider>
